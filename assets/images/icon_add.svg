@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="24" height="24" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="icon_add" data-name="icon/add" clip-path="url(#clip-path)">
+    <rect id="bg" width="24" height="24" fill="none"/>
+    <path id="union" d="M1484.25,673.4v-6.5h-6.5a.75.75,0,0,1,0-1.5h6.5v-6.5a.75.75,0,1,1,1.5,0v6.5h6.5a.75.75,0,0,1,0,1.5h-6.5v6.5a.75.75,0,1,1-1.5,0Z" transform="translate(-1473 -654.15)" fill="#51525d"/>
+  </g>
+</svg>
