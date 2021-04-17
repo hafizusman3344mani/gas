@@ -59,9 +59,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   void initState() {
-    setState(() {
-      verificationId = widget.verifyId;
-    });
+    verificationId = widget.verifyId;
 
     getFcm();
     Future.delayed(Duration.zero, () {
@@ -343,7 +341,7 @@ class _OtpScreenState extends State<OtpScreen> {
         prefs.setString("phoneNumber", widget.phoneNumber);
       });
     } else if (managerCout != 0) {
-       await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('managers')
           .where('phone', isEqualTo: widget.phoneNumber)
           .get()
@@ -371,7 +369,7 @@ class _OtpScreenState extends State<OtpScreen> {
         prefs.setString("phoneNumber", widget.phoneNumber);
       });
     } else if (adminCount != 0) {
-        await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('admin')
           .where('phone', isEqualTo: widget.phoneNumber)
           .get()

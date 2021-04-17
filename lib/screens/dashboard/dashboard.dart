@@ -131,22 +131,23 @@ class _DashboardState extends State<Dashboard> {
 
   Future<bool> _onWillPop() {
     return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Are you sure?'),
-            content: Text('Do you want to exit?'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text('No'),
-              ),
-              TextButton(
-                onPressed: () => exit(0),
-                child: Text('Yes'),
-              ),
-            ],
+      context: Get.context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context).r_u_sure_text),
+        content: Text(S.of(context).do_u_want_to_exit_text),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child:  Text(S.of(context).no_btn_text),
           ),
-        ) ??
+          TextButton(
+            onPressed: () => exit(0),
+            child:  Text(S.of(context).yes_btn_text),
+          ),
+        ],
+      ),
+    ) ??
         false;
   }
+
 }

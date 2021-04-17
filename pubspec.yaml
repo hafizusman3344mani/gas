@@ -29,7 +29,6 @@ dependencies:
   path_provider:
   flutter_svg:
   shared_preferences:
-  keyboard_visibility:
   get:
   dio:
   firebase_core:

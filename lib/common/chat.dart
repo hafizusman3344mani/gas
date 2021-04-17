@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gas_station/common/full_photo.dart';
 import 'package:gas_station/generated/l10n.dart';
+import 'package:gas_station/utils/route_singleton.dart';
 import 'package:gas_station/utils/widgetproperties.dart';
 import 'package:http/http.dart' as http;
 import 'package:gas_station/common/text_view.dart';
@@ -179,12 +180,13 @@ class ChatScreenState extends State<ChatScreen> {
   void onSendMessage(String content, int type) {
     // type: 0 = text, 1 = image, 2 = sticker
     if (content.trim() != '') {
+    String time=  DateTime.now().millisecondsSinceEpoch.toString();
       textEditingController.clear();
       var documentReference = FirebaseFirestore.instance
           .collection('messages')
           .doc(groupChatId)
           .collection(groupChatId)
-          .doc(DateTime.now().millisecondsSinceEpoch.toString());
+          .doc(time);
 
       FirebaseFirestore.instance.runTransaction((transaction) async {
         transaction.set(
@@ -192,7 +194,7 @@ class ChatScreenState extends State<ChatScreen> {
           {
             'idFrom': id,
             'idTo': peerId,
-            'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+            'timestamp':time,
             'content': content,
             'type': type,
           },
@@ -468,6 +470,7 @@ class ChatScreenState extends State<ChatScreen> {
                   .doc(groupChatId)
                   .collection(groupChatId)
                   .orderBy('timestamp', descending: true)
+
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
@@ -505,7 +508,7 @@ class ChatScreenState extends State<ChatScreen> {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
-              'key=AAAAB2YcuVo:APA91bH7UJsNC36OyM-AQ9z0X3UoWXBX-h6FVjNLcl1aT7roz7IAfOGw9fLU-Mn2yzCZstYFpuRlYD3TOvSi-3CIjhbp4kuJDKFcnwo_cc9dOP94zJ8zOWFCQjMZ1zQX5a7thpvaRq5J',
+              'key='+RouteSingleton.instance.serverKey,
         },
         body: jsonEncode(
           <String, dynamic>{

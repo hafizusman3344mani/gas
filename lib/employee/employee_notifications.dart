@@ -22,6 +22,7 @@ import 'package:gas_station/screens/notifications/notification_form.dart';
 import 'package:gas_station/utils/colors.dart';
 import 'package:gas_station/utils/my_behaviour.dart';
 import 'package:gas_station/utils/notification_singleton.dart';
+import 'package:gas_station/utils/route_singleton.dart';
 import 'package:gas_station/utils/widgetproperties.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -329,7 +330,7 @@ class _EmployeeNotificationScreenState
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
-              'key=AAAAB2YcuVo:APA91bH7UJsNC36OyM-AQ9z0X3UoWXBX-h6FVjNLcl1aT7roz7IAfOGw9fLU-Mn2yzCZstYFpuRlYD3TOvSi-3CIjhbp4kuJDKFcnwo_cc9dOP94zJ8zOWFCQjMZ1zQX5a7thpvaRq5J',
+              'key='+RouteSingleton.instance.serverKey,
         },
         body: jsonEncode(
           <String, dynamic>{

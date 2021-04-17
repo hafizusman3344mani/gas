@@ -205,19 +205,16 @@ class _SignInScreenState extends State<SignInScreen> {
         // );
       } else if (adminCount != 0) {
         _submitPhoneNumber();
-      }
-      else{
+      } else {
         WidgetProperties.closeLoader();
         WidgetProperties.showToast(
             S.of(context).number_not_exist, Colors.white, Colors.red);
-
       }
     } else {
       WidgetProperties.closeLoader();
       userController.updateUserBuilder();
     }
   }
-
 
   getBool() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -227,15 +224,15 @@ class _SignInScreenState extends State<SignInScreen> {
       employee = prefs.getBool('employee');
     });
   }
+
   Future<void> _submitPhoneNumber() async {
     /// NOTE: Either append your phone number country code or add in the code itself
     /// Since I'm in India we use "+91 " as prefix `phoneNumber`
-     phone =  countryCode + userMobileNumberController.text.trim();
+    phone = countryCode + userMobileNumberController.text.trim();
     print(phone);
 
     /// The below functions are the callbacks, separated so as to make code more redable
-    void verificationCompleted(AuthCredential phoneAuthCredential)async {
-
+    void verificationCompleted(AuthCredential phoneAuthCredential) async {
       UserCredential result =
           await _auth.signInWithCredential(phoneAuthCredential);
 
@@ -243,8 +240,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
       WidgetProperties.closeLoader();
       if (user != null) {
-        WidgetProperties.goToNextPage(context,
-            OtpScreen(verifyId: verifyId, phoneNumber: phone));
+        WidgetProperties.goToNextPage(
+            context, OtpScreen(verifyId: verifyId, phoneNumber: phone));
       } else {
         print("Error");
       }
@@ -256,26 +253,21 @@ class _SignInScreenState extends State<SignInScreen> {
             S.of(context).too_many_attempts, Colors.white, Colors.red);
       } else if (exception.code == "invalid-phone-number") {
         WidgetProperties.showToast(
-            S.of(context).invalid_phone,
-            Colors.white,
-            Colors.red);
+            S.of(context).invalid_phone, Colors.white, Colors.red);
       }
       print(exception);
       WidgetProperties.closeLoader();
-      
     }
 
     void codeSent(String verificationId, [int code]) {
-      setState(() {
-        verifyId = verificationId;
-      });
+      verifyId = verificationId;
+
       WidgetProperties.goToNextPageWithReplacement(
           context,
           OtpScreen(
             verifyId: verifyId,
             phoneNumber: phone,
           ));
-
     }
 
     void codeAutoRetrievalTimeout(String verificationId) {
@@ -318,5 +310,4 @@ class _SignInScreenState extends State<SignInScreen> {
 
 // _login();
   }
-
 }

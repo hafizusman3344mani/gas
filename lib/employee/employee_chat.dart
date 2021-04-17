@@ -15,6 +15,7 @@ import 'package:gas_station/manager/manager_chat_screen.dart';
 import 'package:gas_station/models/user/user_model.dart';
 import 'package:gas_station/screens/authentication/signin_screen.dart';
 import 'package:gas_station/utils/colors.dart';
+import 'package:gas_station/utils/route_singleton.dart';
 import 'package:gas_station/utils/widgetproperties.dart';
 import 'package:get/get.dart';
 
@@ -44,7 +45,7 @@ class EmployeeChatScreenState extends State<EmployeeChatScreen> {
   @override
   void initState() {
     getNumber();
-   // getUserData();
+    getUserData();
     super.initState();
     ref = FirebaseFirestore.instance.collection('managers');
   }
@@ -164,7 +165,7 @@ class EmployeeChatScreenState extends State<EmployeeChatScreen> {
               ),
               ListTile(
                 onTap: () {
-                  showDialog(context);
+                  RouteSingleton.instance.showLogoutDialog(context, RouteSingleton.instance.employee);
                 },
                 title: Transform.translate(
                   offset: Offset(-16, 0),
@@ -286,109 +287,24 @@ class EmployeeChatScreenState extends State<EmployeeChatScreen> {
     });
   }
 
-  Future<void> showDialog(BuildContext buildContext) {
-    showGeneralDialog(
-      barrierDismissible: true,
-      barrierLabel: "",
-      barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 400),
-      context: buildContext,
-      pageBuilder: (_, __, ___) {
-        return Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: 100,
-            child: SizedBox.expand(
-                child: Container(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Textview2(
-                        title: S.of(context).want_to_logout,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.0,
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 20.0),
-                              child: HeroButton(
-                                height: 30.0,
-                                width: 120,
-                                radius: 32.0,
-                                gradient: Color(0xff4cae4d),
-                                title: S.of(context).yes_btn_text,
-                                onPressed: () {
-                                  logoutFromApplication(buildContext);
-                                },
-                              ),
-                            ),
-                            const Divider(
-                              color: Colors.grey,
-                              thickness: 0.60,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 20.0),
-                              child: HeroButton(
-                                height: 30.0,
-                                width: 120,
-                                radius: 32.0,
-                                gradient: AppColors.formContinueButtomColor,
-                                title: S.of(context).no_btn_text,
-                                onPressed: () {
-                                  Get.back();
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                )),
-            margin: EdgeInsets.only(bottom: 50, left: 12, right: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        );
-      },
-    );
-  }
+  getUserData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String phone = sharedPreferences.getString('phoneNumber');
+    String address = sharedPreferences.getString('address');
+    await FirebaseFirestore.instance
+        .collection('employees')
+        .where('phone', isEqualTo: phone)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        userModel = UserModel.fromMap(value.docs.single.data());
+        address = userModel.address;
+        setState(() {
 
-  Future<void> logoutFromApplication(BuildContext buildContext) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove('employee');
-    await preferences.remove('branchId');
-    await preferences.remove('boolValue');
-    await preferences.remove('phoneNumber');
-    await preferences.remove('currentUserId');
-    await preferences.clear();
-    WidgetProperties.goToNextPageWithAllReplacement(
-        buildContext, SignInScreen());
+        }); //if it is a single document
+      }
+    });
   }
-
-  // getUserData() async {
-  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //   String phone = sharedPreferences.getString('phoneNumber');
-  //   await FirebaseFirestore.instance
-  //       .collection('employees')
-  //       .where('phone', isEqualTo: phone)
-  //       .get()
-  //       .then((value) {
-  //     if (value.docs.isNotEmpty) {
-  //       userModel = UserModel.fromMap(value.docs.single.data());
-  //       setState(() {
-  //
-  //       }); //if it is a single document
-  //     }
-  //   });
-  // }
 }
 
 class Choice {
