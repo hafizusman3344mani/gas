@@ -97,5 +97,8 @@
   "want_to_logout": "هل تريد أن تتأخر؟",
   "notification_not_sent_text": "لم يتم إرسال الإخطار",
   "want_to_delete": "هل تريد أن تحذف؟",
-  "something_wrong": "هناك خطأ ما"
+  "something_wrong": "هناك خطأ ما",
+  "empty_error" : "هذه الخانة مطلوبه",
+  "invalid_email" : "يرجى إدخال البريد الإلكتروني الصحيح",
+  "password_length_error" : "يجب أن تكون كلمة المرور أكبر من أربعة"
 }

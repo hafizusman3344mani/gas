@@ -1024,6 +1024,36 @@ class S {
       args: [],
     );
   }
+
+  /// `This field is required`
+  String get empty_error {
+    return Intl.message(
+      'This field is required',
+      name: 'empty_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid email`
+  String get invalid_email {
+    return Intl.message(
+      'Please enter a valid email',
+      name: 'invalid_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password should be greater than 4`
+  String get password_length_error {
+    return Intl.message(
+      'Password should be greater than 4',
+      name: 'password_length_error',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

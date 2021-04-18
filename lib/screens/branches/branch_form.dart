@@ -84,7 +84,7 @@ class _BranchFormState extends State<BranchForm> {
                         branchController.updateBranchBuilder();
                       },
                       formatter: FilteringTextInputFormatter.allow(
-                        RegExp("^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z ]+[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z-_ ]*"),
+                        RegExp("^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z 0-9]+[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z-_ 0-9]*"),
                       ),
                       obsecureText: false,
                       maxLength: 50,

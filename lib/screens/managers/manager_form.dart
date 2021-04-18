@@ -91,6 +91,7 @@ class _ManagerFormState extends State<ManagerForm> {
         alignment: Alignment.center,
         decoration: _listDecoration,
         child: GetBuilder<UserController>(
+          id: 'manager',
           init: userController,
           initState: (child) {},
           builder: (_) {
@@ -281,6 +282,15 @@ class _ManagerFormState extends State<ManagerForm> {
   }
 
   Future<void> registerManager(BuildContext buildContext) async {
+
+    userModel.firstName = managerFirstNameController.text;
+    userModel.lastName = managerLastNameController.text;
+    userModel.phone = managerMobileNumberController.text;
+    userModel.managerNumber = managerNumberController.text;
+    userModel.address = _selectedLocation;
+
+    if (userController.checkManagerFormValidation(userModel)) {
+
     BranchModel branchModel;
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection('managers').doc();
@@ -290,7 +300,7 @@ class _ManagerFormState extends State<ManagerForm> {
     await FirebaseFirestore.instance.collection('managers').get();
     var empSanpshots =
     await FirebaseFirestore.instance.collection('employees').get();
-    var bRef = await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('branches')
         .where('searchString', isEqualTo: _selectedLocation.toString())
         .get()
@@ -324,18 +334,16 @@ class _ManagerFormState extends State<ManagerForm> {
     userModel.cityName = branchModel.branchAddress;
     userModel.branchName = branchModel.name;
     userModel.fcmToken = '';
-    userModel.firstName = managerFirstNameController.text;
-    userModel.lastName = managerLastNameController.text;
-    userModel.phone = managerMobileNumberController.text;
-    userModel.managerNumber = managerNumberController.text;
+
     userModel.branchId = branchModel.id;
-    userModel.address = _selectedLocation;
+
     userModel.roleId = 'manager';
     userModel.searchString = searchString;
     userModel.id = id;
+
     var docSanpshots =
         await FirebaseFirestore.instance.collection('managers').get();
-    if (userController.checkManagerFormValidation(userModel)) {
+
       int adminCount = adminSanpshots.docs
           .where((element) =>
       element.get('phone').toString().trim().toLowerCase() == managerMobileNumberController.text.toString().trim().toLowerCase())
@@ -376,7 +384,10 @@ class _ManagerFormState extends State<ManagerForm> {
             'Phone already exist', Colors.white, Colors.red);
       }
     } else {
-      userController.updateUserBuilder();
+      //this.userController.update(['manager']);
+      setState(() {
+
+      });
     }
   }
 
@@ -464,7 +475,10 @@ class _ManagerFormState extends State<ManagerForm> {
       //       'Phone already exist', Colors.white, Colors.red);
       // }
     } else {
-      userController.updateUserBuilder();
+      //userController.update();
+      setState(() {
+
+      });
     }
   }
 }

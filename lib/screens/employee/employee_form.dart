@@ -36,7 +36,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
   bool manager = false;
   var userModel = UserModel();
 
-  var userController = Get.put(UserController());
+  var userController = Get.find<UserController>();
 
   var fnNode = FocusNode();
 
@@ -344,6 +344,13 @@ class _EmployeeFormState extends State<EmployeeForm> {
   DocumentReference documentReference =
       FirebaseFirestore.instance.collection('employees').doc();
   Future<void> registerEmployee(BuildContext buildContext) async {
+    userModel.firstName = employeeFirstNameController.text;
+    userModel.lastName = employeeLastNameController.text;
+    userModel.phone = employeeMobileNumberController.text;
+    userModel.employeeNumber = employeeNumberController.text;
+    userModel.address = _selectedLocation;
+
+    if (userController.checkEmployeeFormValidation(userModel)) {
     BranchModel branchModel;
     await FirebaseFirestore.instance
         .collection('branches')
@@ -368,17 +375,15 @@ class _EmployeeFormState extends State<EmployeeForm> {
     String searchString = fullName + _selectedLocation;
     userModel.createdBy = sharedPreferences.getString("phoneNumber");
     userModel.createdAt = DateTime.now().toString();
-    userModel.firstName = employeeFirstNameController.text;
-    userModel.lastName = employeeLastNameController.text;
-    userModel.phone = employeeMobileNumberController.text;
+
     userModel.branchName = branchModel.name;
     userModel.cityName = branchModel.branchAddress;
-    userModel.employeeNumber = employeeNumberController.text;
+
     userModel.createdAt = DateTime.now().toString();
     userModel.createdBy = sharedPreferences.getString('phoneNumber');
     userModel.searchString = searchString;
     userModel.fcmToken = '';
-    userModel.address = _selectedLocation;
+
     userModel.branchId = branchModel.id;
     userModel.id = id;
     //  userModel.branchId = branchModel.id;
@@ -391,7 +396,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
     var empSanpshots =
         await FirebaseFirestore.instance.collection('employees').get();
 
-    if (userController.checkEmployeeFormValidation(userModel)) {
+
       // userController.addUser(userModel, buildContext, "employees");
       int adminCount = adminSanpshots.docs
           .where((element) =>
@@ -429,7 +434,10 @@ class _EmployeeFormState extends State<EmployeeForm> {
             S.of(context).already_exist, Colors.white, Colors.red);
       }
     } else {
-      userController.updateUserBuilder();
+      //userController.update();
+      setState(() {
+
+      });
     }
   }
 
@@ -523,7 +531,10 @@ class _EmployeeFormState extends State<EmployeeForm> {
         // }
       }
     } else {
-      userController.updateUserBuilder();
+      //userController.update();
+      setState(() {
+
+      });
     }
   }
 

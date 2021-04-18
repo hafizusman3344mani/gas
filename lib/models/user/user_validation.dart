@@ -1,5 +1,6 @@
 import 'package:gas_station/common/exception_codes_messages.dart';
 import 'package:gas_station/common/models/validity_model.dart';
+import 'package:gas_station/generated/l10n.dart';
 
 
 class UserValidation {

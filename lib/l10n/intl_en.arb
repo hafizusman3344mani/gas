@@ -117,5 +117,9 @@
   "chats": "Chats",
   "list": "List",
   "chat_with": "Chat with",
-  "something_wrong": "Something went wrong"
+  "something_wrong": "Something went wrong",
+
+  "empty_error" : "This field is required",
+  "invalid_email" : "Please enter a valid email",
+  "password_length_error" : "Password should be greater than 4"
 }

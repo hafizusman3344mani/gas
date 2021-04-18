@@ -81,7 +81,7 @@ class UserController extends GetxController {
       return false;
   }
 
-  Future<void> checkFirstName(String value) {
+  checkFirstName(String value) {
     validityFirstName = UserValidation.validateFirstName(value);
     // updateUserBuilder();
   }
