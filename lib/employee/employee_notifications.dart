@@ -381,7 +381,8 @@ class _EmployeeNotificationScreenState
     NotificationModel pushNotificationModel = NotificationModel();
     pushNotificationModel.id = notificationModel.id;
     pushNotificationModel.createdAt = DateTime.now().toString();
-    pushNotificationModel.senderId = prefs.getString('phoneNumber');
+    pushNotificationModel.senderId = notificationModel.senderId;
+    pushNotificationModel.receiverId = prefs.getString('phoneNumber');
     pushNotificationModel.sendDate = DateTime.now().toString();
     pushNotificationModel.createdBy = [notificationModel.senderId];
     pushNotificationModel.name = notificationModel.name;

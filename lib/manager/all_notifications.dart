@@ -93,7 +93,7 @@ class _AllNotificationsState extends State<AllNotifications> {
                             ),
                             title: Text(notificationModel.name),
                             subtitle:
-                                Text(notificationModel.senderId.toString()),
+                                Text(notificationModel.receiverId.toString()),
                             trailing: Text(formattedDate),
                           ),
                         ));
