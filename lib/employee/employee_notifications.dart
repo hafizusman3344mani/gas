@@ -1,34 +1,24 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gas_station/common/common_screen.dart';
-import 'package:gas_station/common/custom_button.dart';
 import 'package:gas_station/common/custominput.dart';
 import 'package:gas_station/common/text_view.dart';
 import 'package:gas_station/controllers/notification_controller.dart';
-import 'package:gas_station/controllers/user_controller.dart';
 import 'package:gas_station/db/db_service.dart';
 import 'package:gas_station/employee/employee_dashboard.dart';
 import 'package:gas_station/generated/l10n.dart';
-import 'package:gas_station/manager/manager_dashboard.dart';
 import 'package:gas_station/models/notification_model.dart';
 import 'package:gas_station/models/user/user_model.dart';
-import 'package:gas_station/screens/dashboard/dashboard.dart';
-import 'package:gas_station/screens/notifications/notification_form.dart';
 import 'package:gas_station/utils/colors.dart';
 import 'package:gas_station/utils/my_behaviour.dart';
-import 'package:gas_station/utils/notification_singleton.dart';
 import 'package:gas_station/utils/route_singleton.dart';
 import 'package:gas_station/utils/widgetproperties.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../services/notification_service/message.dart';
 
 class EmployeeNotificationScreen extends StatefulWidget {
   @override
@@ -329,8 +319,7 @@ class _EmployeeNotificationScreenState
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization':
-              'key='+RouteSingleton.instance.serverKey,
+          'Authorization': 'key=' + RouteSingleton.instance.serverKey,
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -350,7 +339,6 @@ class _EmployeeNotificationScreenState
       );
 
       addPushNotification(notificationModel);
-
     } catch (e) {
       WidgetProperties.showToast(
           S.of(context).something_wrong, Colors.white, Colors.red);
@@ -389,17 +377,19 @@ class _EmployeeNotificationScreenState
   }
 
   void addPushNotification(NotificationModel notificationModel) async {
-    NotificationModel pushNotificationModel=NotificationModel();
-  pushNotificationModel.id = notificationModel.id;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    NotificationModel pushNotificationModel = NotificationModel();
+    pushNotificationModel.id = notificationModel.id;
     pushNotificationModel.createdAt = DateTime.now().toString();
-    pushNotificationModel.senderId = notificationModel.senderId;
+    pushNotificationModel.senderId = prefs.getString('phoneNumber');
     pushNotificationModel.sendDate = DateTime.now().toString();
     pushNotificationModel.createdBy = [notificationModel.senderId];
     pushNotificationModel.name = notificationModel.name;
     pushNotificationModel.address = notificationModel.address;
     pushNotificationModel.searchString = notificationModel.searchString;
     FireStoreService()
-        .addNotification(pushNotificationModel, "pushnotifications").then((value) {
+        .addNotification(pushNotificationModel, "pushnotifications")
+        .then((value) {
       WidgetProperties.showToast(
           S.of(context).notification_sent, Colors.white, Colors.green);
     });
